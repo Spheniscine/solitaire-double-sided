@@ -63,7 +63,7 @@ fn App() -> Element {
 
 #[component]
 pub fn Hero() -> Element {
-    let card = crate::game::Card::from_code("1W2").unwrap();
+    let card = crate::game::Card::from_code("5B5").unwrap();
 
     rsx! {
         div {

@@ -26,7 +26,7 @@ fn render_back_rank(card: Card) -> Element {
     rsx! {
         div {
             style: "place-items: center;",
-            height: "1.25em",
+            height: "1.2em",
             aspect_ratio: 1,
             border_radius: "50%",
             background_color: get_color(!card.is_white),
