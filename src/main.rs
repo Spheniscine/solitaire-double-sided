@@ -1,4 +1,10 @@
 use dioxus::prelude::*;
+use glam::Vec2;
+
+use crate::components::CardComponent;
+
+mod game;
+mod components;
 
 const FAVICON: Asset = asset!("/assets/favicon.ico");
 
@@ -57,9 +63,18 @@ fn App() -> Element {
 
 #[component]
 pub fn Hero() -> Element {
+    let card = crate::game::Card::from_code("1W2").unwrap();
+
     rsx! {
         div {
             id: "hero",
+
+            CardComponent {
+                position: Vec2::new(10., 10.),
+                width: 13.,
+                card,
+            }
+
             // img { src: HEADER_SVG, id: "header" }
             // div { id: "links",
             //     a { href: "https://dioxuslabs.com/learn/0.6/", "📚 Learn Dioxus" }
