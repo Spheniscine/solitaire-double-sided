@@ -169,3 +169,34 @@ button {
    height: 1px;
    width: 1px;
 }
+
+@keyframes flip {
+    0% {
+        transform: rotateY(0deg);
+    }
+}
+
+.flip-card {
+    position: absolute;
+}
+
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    perspective: 333rem;
+    transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden; /* Safari */
+    backface-visibility: hidden;
+}
+
+.flip-card-back {
+    transform: rotateY(180deg);
+}

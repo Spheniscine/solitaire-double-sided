@@ -1,7 +1,7 @@
 use dioxus::prelude::*;
 use glam::Vec2;
 
-use crate::components::CardComponent;
+use crate::components::{CardComponent, FlipCard};
 
 mod game;
 mod components;
@@ -63,15 +63,15 @@ fn App() -> Element {
 
 #[component]
 pub fn Hero() -> Element {
-    let card = crate::game::Card::from_code("5B5").unwrap();
+    let card = crate::game::Card::from_code("5W1").unwrap();
 
     rsx! {
         div {
             id: "hero",
 
-            CardComponent {
+            FlipCard {
                 position: Vec2::new(10., 10.),
-                width: 13.,
+                card_width: 13.,
                 card,
             }
 
