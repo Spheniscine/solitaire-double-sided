@@ -2,7 +2,7 @@ use async_std::stream::StreamExt;
 use dioxus::prelude::*;
 use glam::Vec2;
 
-use crate::{components::{BoardComponent, LocalStorage, rem}, game::{ANIMATION_DURATION, AnimationKey, GameState, ScreenState}};
+use crate::{components::{BoardComponent, EMOJI_MAP, LocalStorage, rem}, game::{ANIMATION_DURATION, AnimationKey, GameState, ScreenState}};
 
 #[component]
 pub fn Hero() -> Element {
@@ -65,14 +65,14 @@ pub fn Hero() -> Element {
                     "Wins: {st.num_wins}",
                 }
 
-                // div {
-                //     position: "absolute",
-                //     top: rem(1.5),
-                //     right: rem(2.),
-                //     class: "game-button",
-                //     onclick: move |_| if clean {state.write().screen_state = ScreenState::Settings;},
-                //     "Settings"
-                // }
+                div {
+                    position: "absolute",
+                    top: rem(1.5),
+                    right: rem(2.),
+                    class: "game-button",
+                    // onclick: move |_| if clean {state.write().screen_state = ScreenState::Settings;},
+                    "Settings"
+                }
 
                 div {
                     position: "absolute",
@@ -83,14 +83,14 @@ pub fn Hero() -> Element {
                     "Reset"
                 }
 
-                // div {
-                //     position: "absolute",
-                //     top: rem(11.),
-                //     right: rem(2.),
-                //     class: "game-button",
-                //     onclick: move |_| if clean {state.write().screen_state = ScreenState::Help;},
-                //     "Help"
-                // }
+                div {
+                    position: "absolute",
+                    top: rem(11.),
+                    right: rem(2.),
+                    class: "game-button",
+                    // onclick: move |_| if clean {state.write().screen_state = ScreenState::Help;},
+                    "Help"
+                }
 
                 div {
                     position: "absolute",
@@ -111,6 +111,18 @@ pub fn Hero() -> Element {
                     is_won: st.is_won(),
                 }
             }
+
+            div {
+                id: "preloaded-images",
+
+                for asset in EMOJI_MAP.values() {
+                    img {
+                        src: *asset,
+                        width: 1,
+                        height: 1,
+                    }
+                }
+            },
         }
     }
 }
