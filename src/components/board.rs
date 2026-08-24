@@ -1,7 +1,7 @@
 use dioxus::prelude::*;
 use glam::Vec2;
 
-use crate::{components::{CARD_BORDER_RADIUS_RATIO, CARD_HEIGHT_RATIO, CardComponent, CardFrame, FlipCard, Movement, rem}, game::{AnimationAct, AnimationKey, Board, BoardPos, Card, NUM_DEPOTS}};
+use crate::{components::{CARD_BORDER_RADIUS_RATIO, CARD_HEIGHT_RATIO, CardComponent, CardFrame, Emoji, FlipCard, Movement, rem}, game::{AnimationAct, AnimationKey, Board, BoardPos, Card, NUM_DEPOTS}};
 
 #[component]
 pub fn BoardComponent(
@@ -11,6 +11,10 @@ pub fn BoardComponent(
     onclick: EventHandler<BoardPos>,
     #[props(default)]
     oncontextmenu: EventHandler<BoardPos>,
+
+    #[props(default)]
+    onclick_flip: EventHandler<()>,
+
     #[props(default)]
     animation_key: AnimationKey,
     #[props(default)]
@@ -90,11 +94,36 @@ pub fn BoardComponent(
         }
     });
 
+    let flip_button = {
+        let pos = get_pos(4, 3) + Vec2::new(card_width + spacer_x, 0.);
+        let can_flip = board.selected.is_some_and(|p| board.can_flip(p));
+        let opacity: f32 = if can_flip {1.} else {0.3};
+        rsx! {
+            div {
+                position: "absolute",
+                top: rem(pos.y),
+                left: rem(pos.x),
+                font_size: rem(7.),
+                opacity,
+
+                onclick: move |_| {
+                    onclick_flip.call(());
+                },
+
+                Emoji { 
+                    text: "↩️"
+                }
+            }
+        }
+    };
+
     rsx! {
         div {
             position: "absolute",
             top: rem(position.y),
             left: rem(position.x),
+
+            {flip_button}
 
             for depot in 0..NUM_DEPOTS {
                 CardFrame { 

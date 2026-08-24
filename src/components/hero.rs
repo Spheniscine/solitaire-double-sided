@@ -70,6 +70,7 @@ pub fn Hero() -> Element {
                     board: st.board.clone(),
                     onclick: move |pos| if clean {state.write().onclick(pos);},
                     oncontextmenu: move |pos| if clean {state.write().oncontextmenu(pos);},
+                    onclick_flip: move |_| if clean {state.write().onclick_flip();},
                     animation_key: st.animation_key,
                     is_won: st.is_won(),
                 }

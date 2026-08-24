@@ -19,8 +19,8 @@ pub use hero::*;
 // mod local_storage;
 // pub use local_storage::LocalStorage;
 
-// mod emoji;
-// pub use emoji::*;
+mod emoji;
+pub use emoji::*;
 
 // mod help;
 // pub use help::*;
