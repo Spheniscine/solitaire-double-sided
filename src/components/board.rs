@@ -22,7 +22,7 @@ pub fn BoardComponent(
 ) -> Element {
     let card_width = 13f32;
     let card_height = card_width * CARD_HEIGHT_RATIO;
-    let spacer_x = 1.5f32;
+    let spacer_x = 1.75f32;
     let start_y = 2f32;
 
     let pos_x = {

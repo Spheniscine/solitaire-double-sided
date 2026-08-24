@@ -3,7 +3,7 @@ use std::time::Duration;
 use rand::{Rng, RngExt, seq::SliceRandom};
 use serde::{Deserialize, Serialize};
 
-use crate::game::{Board, BoardPos, Card, DECK_SIZE, NUM_RANKS, RANKS};
+use crate::{components::LocalStorage, game::{Board, BoardPos, Card, DECK_SIZE, NUM_RANKS, RANKS}};
 
 impl Board {
     pub fn can_flip(&self, pos: BoardPos) -> bool {
@@ -90,7 +90,7 @@ impl GameState {
             if !self.is_won() { break; }
         }
         
-        // LocalStorage.save_game_state(&self);
+        LocalStorage.save_game_state(&self);
     }
 
     pub fn is_busy(&self) -> bool {
@@ -144,7 +144,7 @@ impl GameState {
             // self.check_auto_moves();
         }
 
-        // if !self.is_busy() { LocalStorage.save_game_state(&self); }
+        if !self.is_busy() { LocalStorage.save_game_state(&self); }
     }
 
     pub fn can_select(&mut self, pos: BoardPos) -> bool {
@@ -218,5 +218,37 @@ impl GameState {
 
         let Some(pos) = self.board.selected else {return};
         self.flip_intent(pos);
+    }
+
+    pub fn undo_possible(&self) -> bool {
+        self.allow_undo && !self.undo_stack.is_empty()
+    }
+
+    pub fn undo(&mut self) {
+        if self.is_busy() || !self.undo_possible() { return; }
+        let Some(target_len) = self.undo_stack.pop() else {return};
+        while self.history.len() > target_len {
+            let rec = self.history.pop().unwrap();
+            match rec {
+                ActionRecord::Move { pos1, pos2 } => {
+                    self.board.do_move(pos2, pos1);
+                },
+                ActionRecord::Flip { pos } => {
+                    self.board.do_flip(pos);
+                },
+            }
+            
+            self.board.advance_actions(); // no animation, as repeated card moves on same card causes problems
+        }
+        LocalStorage.save_game_state(&self);
+    }
+
+    pub fn restart(&mut self) {
+        if self.history.is_empty() || !self.undo_possible() { return; }
+        self.board = Board::from_deal(&self.deal);
+        self.history.clear();
+        self.undo_stack.clear();
+
+        if !self.is_busy() { LocalStorage.save_game_state(&self); }
     }
 }
