@@ -85,3 +85,46 @@ pub fn CardComponent(
         }
     }
 }
+
+pub const CARD_FRAME_DEFAULT_COLOR: &str = "#aaa";
+
+#[component]
+pub fn CardFrame(
+    position: Vec2,
+    width: f32,
+    hint: Option<Element>,
+    #[props(default = CARD_FRAME_DEFAULT_COLOR.to_string())] color: String,
+    onclick: EventHandler<MouseEvent>,
+    oncontextmenu: EventHandler<MouseEvent>,
+) -> Element {
+    let pt = width / 12.;
+    let pt = |x: f32| {
+        rem(x * pt)
+    };
+    rsx! {
+        div {
+            display: "flex",
+            align_items: "center",
+            justify_content: "center",
+            position: "absolute",
+            top: rem(position.y),
+            left: rem(position.x),
+            margin: pt(0.25), // frame must be slightly smaller than card to prevent peeking out in some platforms
+            width: pt(10.),
+            height: pt(11.),
+            border: "{pt(0.5)} solid {color}",
+            text_align: "center",
+            color,
+            border_radius: pt(1.5),
+            font_size: pt(5.),
+            padding: pt(0.25),
+            onclick, oncontextmenu,
+
+            if let Some(hint) = hint {
+                div {
+                    {hint},
+                }
+            }
+        }
+    }
+}
