@@ -3,7 +3,7 @@ use std::time::Duration;
 use rand::{Rng, RngExt, seq::SliceRandom};
 use serde::{Deserialize, Serialize};
 
-use crate::{components::LocalStorage, game::{Board, BoardPos, Card, DECK_SIZE, NUM_RANKS, RANKS}};
+use crate::{components::LocalStorage, game::{Board, BoardPos, Card, DECK_SIZE, NUM_RANKS, RANKS, SettingsState}};
 
 impl Board {
     pub fn can_flip(&self, pos: BoardPos) -> bool {
@@ -250,5 +250,16 @@ impl GameState {
         self.undo_stack.clear();
 
         if !self.is_busy() { LocalStorage.save_game_state(&self); }
+    }
+
+    pub fn new_settings_state(&self) -> SettingsState {
+        SettingsState {
+            allow_undo: self.allow_undo,
+        }
+    }
+
+    pub fn apply_settings(&mut self, settings: &SettingsState){
+        self.allow_undo = settings.allow_undo;
+        LocalStorage.save_game_state(&self);
     }
 }
