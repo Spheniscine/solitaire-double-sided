@@ -12,7 +12,7 @@ fn get_color(is_white: bool) -> &'static str {
     if is_white {"#fff"} else {"#000"}
 }
 
-fn render_rank(card: Card) -> Element {
+pub fn render_rank(card: Card) -> Element {
     rsx! {
         span {
             font_family: KATEX_SUITS_FONT_STR,

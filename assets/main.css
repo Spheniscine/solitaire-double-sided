@@ -144,6 +144,14 @@ button {
     width: 24rem;
 }
 
+.help {
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    color: #fff; 
+    padding: 4rem;
+}
+
 .help p {
     margin-top: 1em;
 }
