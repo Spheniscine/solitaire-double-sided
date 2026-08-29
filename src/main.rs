@@ -42,15 +42,6 @@ fn App() -> Element {
             rel: "stylesheet",
         }
         document::Link { rel: "icon", href: FAVICON }
-
-        if !STATIC_CSS {
-            // visibility hidden to prevent FOUC, is set back to visible in MAIN_CSS
-            document::Style {r#"
-                html {{
-                    visibility: hidden;
-                }}
-            "#,}
-        }
         
         document::Style {r#"
             @font-face {{
@@ -60,9 +51,16 @@ fn App() -> Element {
                 src: url({KATEX_SUITS}) format("woff2");
             }} 
         "#,}
+        
         if STATIC_CSS {
             document::Style { {MAIN_CSS_STR} }
         } else {
+            // visibility hidden to prevent FOUC, is set back to visible in MAIN_CSS
+            document::Style {r#"
+                html {{
+                    visibility: hidden;
+                }}
+            "#,}
             document::Link { href: MAIN_CSS, rel: "stylesheet" }
         }
 
