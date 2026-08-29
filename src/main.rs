@@ -15,7 +15,10 @@ const KATEX_SUITS: Asset = asset!("/assets/KaTeX_Suits.woff2");
 // from https://www.confettijs.org/
 const CONFETTI_JS: Asset = asset!("/assets/confetti.min.js");
 
+const STATIC_CSS: bool = true;
+
 const MAIN_CSS: Asset = asset!("/assets/main.css");
+const MAIN_CSS_STR: &str = const_css_minify::minify!("../assets/main.css");
 
 fn main() {
     dioxus::launch(App);
@@ -39,22 +42,30 @@ fn App() -> Element {
         }
         document::Link { rel: "icon", href: FAVICON }
 
-        document::Style {
+        if !STATIC_CSS {
             // visibility hidden to prevent FOUC, is set back to visible in MAIN_CSS
-            r#"
-            html {{
-                visibility: hidden;
-            }}
+            document::Style {r#"
+                html {{
+                    visibility: hidden;
+                }}
+            "#,}
+        }
+        
+        document::Style {r#"
             @font-face {{
                 font-family: KaTeX_Suits;
                 font-style: normal;
                 font-weight: 700;
                 src: url({KATEX_SUITS}) format("woff2");
             }} 
-            "#,
+        "#,}
+        if STATIC_CSS {
+            document::Style { {MAIN_CSS_STR} }
+        } else {
+            document::Link { href: MAIN_CSS, rel: "stylesheet" }
         }
-        document::Link { rel: "stylesheet", href: MAIN_CSS }
-        script { src: CONFETTI_JS }
+        
+        document::Script { src: CONFETTI_JS }
         Hero {}
 
     }
