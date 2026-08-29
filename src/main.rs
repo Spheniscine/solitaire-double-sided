@@ -54,7 +54,7 @@ fn App() -> Element {
             "#,
         }
         document::Link { rel: "stylesheet", href: MAIN_CSS }
-        document::Script { src: CONFETTI_JS }
+        script { src: CONFETTI_JS }
         Hero {}
 
     }
