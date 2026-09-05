@@ -26,7 +26,7 @@ pub fn Help(mut game_state: Signal<GameState>) -> Element {
 
     rsx! {
         div {
-            font_size: rem(4.),
+            font_size: rem(4.5),
             class: "help",
 
             div {
@@ -41,7 +41,7 @@ pub fn Help(mut game_state: Signal<GameState>) -> Element {
                 }
 
                 p {
-                    "Cards stack by ", Emph {"descending rank"}, " and " Emph {"alternating color"},
+                    "Cards stack by ", Emph {"decrementing ranks"}, " and " Emph {"alternating color"},
                     ". Such stacks of any size can be moved as a unit. An empty column may be filled by any card or stack."
                 }
 
@@ -55,7 +55,7 @@ pub fn Help(mut game_state: Signal<GameState>) -> Element {
                 }
 
                 p {
-                    "To ",Emph{"win the game"},", sort all cards into 5 stacks of 5 cards each, all of descending rank and
+                    "To ",Emph{"win the game"},", sort all cards into 5 stacks of 5 cards each, all of decrementing ranks and
                     alternating color."
                 }
             }
